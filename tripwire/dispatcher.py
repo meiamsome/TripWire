@@ -16,7 +16,7 @@ class HookDispatcher(object):
         try:
             hooks = self._hook_handlers[hook_type]
             for position in xrange(len(hooks)):
-                if hooks[position][0] < hooks:
+                if hooks[position][0] < priority:
                     break
             else:
                 position += 1
