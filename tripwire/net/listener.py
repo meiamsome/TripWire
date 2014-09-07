@@ -1,14 +1,31 @@
-from tripwire.hooks import ServerStartHook, ServerStopHook
+import socket
+
+from tripwire.hooks import ServerStartHook, ServerStopHook, ServerTickHook
+from tripwire.net.hooks import IncomingConnection
 
 class Listener(object):
     def __init__(self, server):
         self._server = server
-        self._server.register_hook_handler(ServerStartHook, self.start_listening, -100)
+        self._server.register_hook_handler(ServerStartHook, self.start_listening, 0)
+        self._server.register_hook_handler(ServerTickHook, self.accept, 0)
         self._server.register_hook_handler(ServerStopHook, self.close, 0)
+        self._socket = None
 
     def start_listening(self, hook):
-        # TODO, start the listening port on a separate thread.
-        pass
+        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self._socket.settimeout(1.0)
+        # TODO: Move to configuration
+        self._socket.bind(("0.0.0.0", 25565))
+        self._socket.listen(20)
+
+    def accept(self, hook):
+        try:
+            connection, address = self._socket.accept()
+        except socket.timeout:
+            pass
+        else:
+            self._server.handle_hook(IncomingConnection(address, connection))
 
     def close(self, hook):
-        pass
+        if self._socket is None:
+            self._socket.close()
