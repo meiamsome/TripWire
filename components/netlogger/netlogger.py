@@ -5,4 +5,4 @@ from tripwire.net.hooks import NetHook
 class NetLogger(Component):
     def enable(self):
         print("NetLogger enabled.")
-        self._server.register_hook_handler(NetHook, lambda x: print(x.connection_id, x), -10)
+        self.get_server().register_hook_handler(NetHook, lambda x: print(x.connection_id, x), -10)

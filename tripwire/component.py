@@ -30,3 +30,6 @@ class Component(object):
 
     def disable(self):
         pass
+
+    def get_server(self):
+        return self._server
