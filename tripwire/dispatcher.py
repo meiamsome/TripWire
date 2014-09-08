@@ -28,6 +28,7 @@ class HookDispatcher(object):
     def handle_hook(self, hook):
         if not isinstance(hook, BaseHook):
             raise TypeError("Hooks must extend the BaseHook type.")
+        monitors = []
         for hook_type in type(hook).mro():
             try:
                 handlers = self._hook_handlers[hook_type]
@@ -35,4 +36,9 @@ class HookDispatcher(object):
                 pass
             else:
                 for handler in handlers:
-                    handler[1](hook)
+                    if handler[0] >= 0:
+                        handler[1](hook)
+                    else:
+                        monitors.append(handler[1])
+        for monitor in monitors:
+            monitor(hook)
