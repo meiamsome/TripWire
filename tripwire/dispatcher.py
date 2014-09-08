@@ -1,6 +1,6 @@
 from tripwire.hooks import BaseHook
 from types import FunctionType, LambdaType, MethodType, IntType
-
+from tripwire.net.hooks import NetHook
 
 class HookDispatcher(object):
     def __init__(self, server):
