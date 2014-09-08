@@ -3,6 +3,7 @@ from tripwire.net.listener import Listener
 from tripwire.net.version1 import ClientMaintainer
 from tripwire.ticker import Ticker
 from tripwire.hooks import BaseHook, ServerStartHook
+from tripwire.component import ComponentManager
 
 
 class TripWireServer(object):
@@ -13,6 +14,7 @@ class TripWireServer(object):
         self._listener = Listener(self)
         self._ticker = Ticker(self)
         self._client_handler = ClientMaintainer(self)
+        self._component_manager = ComponentManager(self)
         # Trigger the server start.
         self.handle_hook(ServerStartHook())
 
