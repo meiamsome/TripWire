@@ -30,7 +30,6 @@ class ClientMaintainer(object):
                 connection_id, full_packet = self._from_queue.get_nowait()
                 number, data_start = _decode_varint(full_packet)
                 packet = Packet(packet_id=number, data=full_packet[data_start:])
-                print(packet)
                 self._server.handle_hook(PacketReceivedHook(packet, connection_id))
         except Empty:
             pass
