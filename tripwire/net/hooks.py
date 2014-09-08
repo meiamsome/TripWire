@@ -18,5 +18,10 @@ class PacketReceivedHook(NetHook):
         super(PacketReceivedHook, self).__init__(*args, **kwargs)
         self.packet = packet
 
+class PacketSendHook(NetHook, CancellableHook):
+    def __init__(self, packet, *args, **kwargs):
+        super(PacketSendHook, self).__init__(*args, **kwargs)
+        self.packet = packet
+
 class LoginAttemptHook(NetHook):
     pass
